@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+import {useEffect, useState} from 'react';
+
+const URL = 'http://localhost/mywebservice/index.php'
 
 function App() {
+  const [message, setMessage] = useState('')
+  const [origin, setOrigin] = useState('')
+
+  useEffect(() => {
+    axios.get(URL)
+    .then((response) => {
+      setMessage(response.data.message)
+      setOrigin(response.data.origin)
+    }).catch(error => {
+      alert(error)
+    });
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h3>Message from web-server</h3>
+      <p>{message}</p>
+      <p>{origin}</p>
     </div>
   );
 }
